@@ -257,6 +257,14 @@ do
     group = vim.api.nvim_create_augroup('kickstart-highlight-yank', { clear = true }),
     callback = function() vim.hl.on_yank() end,
   })
+
+  vim.api.nvim_create_autocmd("FileType", {
+    pattern = { "cppman" },
+    callback = function()
+      vim.opt_local.number = true
+      vim.opt_local.relativenumber = true
+    end,
+  })
 end
 
 -- ============================================================
@@ -742,8 +750,43 @@ do
     clangd = {},
     -- gopls = {},
     pyright = {},
-    tsc = {},
-    --
+    
+    ts_ls = {
+        filetypes = { 'typescript', 'javascript', 'javascriptreact', 'typescriptreact', 'vue' },
+        init_options = {
+            plugins = {
+                {
+                    name = '@vue/typescript-plugin',
+                    location = vim.fn.stdpath('data') .. '/mason/packages/vue-language-server/node_modules/@vue/language-server',
+                    languages = { 'vue' },
+                },
+            },
+        },
+    },
+
+    intelephense = {
+      settings = {
+        intelephense = {
+          files = {
+            maxSize = 5000000,
+          },
+        },
+      },
+    },
+
+    vue_ls = {},
+    
+    tailwindcss = {
+        filetypes = { 'html', 'css', 'scss', 'javascript', 'javascriptreact', 'typescript', 'typescriptreact', 'vue', 'blade' },
+        settings = {
+            tailwindCSS = {
+                includeLanguages = {
+                    blade = 'html', -- Helpful if you use Laravel Blade alongside Vue/Tailwind
+                },
+            },
+        },
+    },
+
     -- Some languages (like rust) have entire language plugins that can be useful:
     --    https://github.com/mrcjkb/rustaceanvim
     --
@@ -852,6 +895,7 @@ do
       --
       -- You can use 'stop_after_first' to run the first available formatter from the list
       -- javascript = { "prettierd", "prettier", stop_after_first = true },
+      php = { 'pint' }
     },
   }
 
